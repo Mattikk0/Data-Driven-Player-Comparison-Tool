@@ -1,6 +1,6 @@
 # ⚽ Data-Driven Player Comparison Tool
 
-A powerful web application that discovers similar footballers based on comprehensive statistical analysis. Search for any player and instantly find their statistical twins and contrasts across Europe's top leagues.
+A powerful web application that discovers similar footballers based on comprehensive statistical analysis. Search for any player and instantly find their statistical twins and contrasts across Euro[...]
 
 ![Python](https://img.shields.io/badge/Python-44%25-blue)
 ![JavaScript](https://img.shields.io/badge/JavaScript-34.7%25-yellow)
@@ -11,7 +11,7 @@ A powerful web application that discovers similar footballers based on comprehen
 
 ## 🎯 Overview
 
-This tool leverages advanced statistical analysis to identify footballers with similar performance patterns. Whether you're a scout, analyst, or football enthusiast, quickly find players with comparable stats across the **Big 5 European Leagues** (Premier League, La Liga, Serie A, Bundesliga, Ligue 1).
+This tool leverages advanced statistical analysis to identify footballers with similar performance patterns. Whether you're a scout, analyst, or football enthusiast, quickly find players with comp[...]
 
 ### Key Features
 
@@ -73,6 +73,7 @@ This ensures fair comparison regardless of playing style or position-specific me
 
 - Python 3.8+
 - pip (Python package manager)
+- Poetry (for Transfermarkt API setup)
 - Running Transfermarkt API server (localhost:8000)
 
 ### Installation
@@ -94,11 +95,38 @@ This ensures fair comparison regardless of playing style or position-specific me
    pip install flask flask-cors soccerdata pandas scikit-learn requests unidecode
    ```
 
-4. **Start the Transfermarkt API** (separate setup required)
-   - Ensure the Transfermarkt API is running on `localhost:8000`
-   - This provides player search and profile data
+4. **Setup Transfermarkt API (by felipeall)**
+
+   The application requires the Transfermarkt API to be running on `localhost:8000`. Follow these steps to set it up:
+
+   ```bash
+   # Clone the Transfermarkt API repository
+   git clone https://github.com/felipeall/transfermarkt-api.git
+
+   # Navigate to the project's root folder
+   cd transfermarkt-api
+
+   # Instantiate a Poetry virtual environment
+   poetry shell
+
+   # Install the dependencies
+   poetry install --no-root
+
+   # (Optional) Append the current directory to PYTHONPATH
+   export PYTHONPATH=$PYTHONPATH:$(pwd)
+
+   # Start the API server
+   python app/main.py
+
+   # Access the API local page
+   open http://localhost:8000/
+   ```
+
+   > **Note:** Keep this API server running in a separate terminal while using the player comparison tool.
 
 5. **Run the application**
+
+   In your original terminal (with the player comparison tool environment):
    ```bash
    python app.py
    ```
