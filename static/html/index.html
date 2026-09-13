@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="UTF-8">
+    <title>Data-Driven Player Comparison Tool</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body class="body">
+    <div id="player-info-loader" class="loader"></div>
+    <div id="searched-player-container">
+        <img id="searched-player-image" src="" alt="Player Image">
+        <table id="player-info-table" cellspacing="3">
+            <tbody>
+                <tr>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Age</th>
+                    <th>Team</th>
+                    <th>Value</th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="search-container">
+        <form id="player-form">
+            <input placeholder="Enter player name" type="text" id="name-input" name="name" maxlength="50">
+        </form>
+        <button id="search-button">Find similar players</button>
+    </div>
+    <div id="result-loader" class="loader"></div>
+    <div id="result-container">
+        <nav id="change-table-view">
+            <ul>
+                <li id="greatest-similarity"><a href="#">Greatest Similarity</a></li>
+                <li id="least-similarity"><a href="#">Least Similarity</a></li>
+            </ul>
+        </nav>
+
+        <table id="most-similar-table" cellspacing="3">
+            <tbody>
+                <tr>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Age</th>
+                    <th>Team</th>
+                    <th>Value</th>
+                    <th>Similarity</th>
+                </tr>
+            </tbody>
+        </table>
+        <table id="least-similar-table" cellspacing="3">
+            <tbody>
+                <tr>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Age</th>
+                    <th>Team</th>
+                    <th>Value</th>
+                    <th>Similarity</th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script src="../assets/animations.js"></script>
+    <script src="../assets/data.js"></script>
+    <script src="../assets/styling.js"></script>
+</body>
+</html>
