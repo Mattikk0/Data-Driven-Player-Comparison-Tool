@@ -1,3 +1,5 @@
 /.venv
 /downloaded_files
 /__pycache__
+/queries/__pycache__
+/modules/__pycache__
