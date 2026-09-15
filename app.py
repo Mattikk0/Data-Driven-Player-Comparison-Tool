@@ -1,11 +1,23 @@
 import queries.transfermarkt_query as tm
 import soccerdata as sd
 import modules.stats_comparator as sc
+import requests
+import aiohttp
+import asyncio
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 
 app = Flask(__name__, template_folder='static/html', static_folder='static/assets')
 CORS(app)
+
+async def fetch_one_player(player_name, session, pack_limit):
+    async with pack_limit:
+        return await tm.get_player(player_name, session=session)
+
+async def fetch_players(player_names, session, pack_limit):
+    return await asyncio.gather(
+        *(fetch_one_player(player_name, session, pack_limit) for player_name in player_names)
+    )
 
 @app.route('/', methods=['GET'])
 async def index():
@@ -34,10 +46,15 @@ async def find_players():
 
             sorted_similarity = dict(sorted(similarity.items(), key=lambda item: item[1], reverse=False))
             reversed_sorted_similarity = dict(sorted(similarity.items(), key=lambda item: item[1], reverse=True))
-            top_similar_players = {player: reversed_sorted_similarity[player] for player in list(reversed_sorted_similarity)[:10]}
-            least_similar_players = {player: sorted_similarity[player] for player in list(sorted_similarity)[:10]}
-            for player in top_similar_players:
-                p = await tm.get_player(player)
+            top_similar_players = {player: reversed_sorted_similarity[player] for player in list(reversed_sorted_similarity)[:5]}
+            least_similar_players = {player: sorted_similarity[player] for player in list(sorted_similarity)[:5]}
+            async with aiohttp.ClientSession() as session:
+                pack_limit = asyncio.Semaphore(2)
+                top_players, least_players = await asyncio.gather(
+                    fetch_players(top_similar_players, session, pack_limit),
+                    fetch_players(least_similar_players, session, pack_limit),
+                )
+            for player, p in zip(top_similar_players, top_players):
                 if p is None:
                     continue
                 player_data1 = {
@@ -49,8 +66,7 @@ async def find_players():
                     'similarity': top_similar_players[player],
                 }
                 response_most.append(player_data1)
-            for player in least_similar_players:
-                p = await tm.get_player(player)
+            for player, p in zip(least_similar_players, least_players):
                 if p is None:
                     continue
                 player_data2 = {
@@ -68,6 +84,8 @@ async def find_players():
             }), 200
     except ValueError as e:
         return jsonify({'error': str(e)}), 422
+    except requests.exceptions.RequestException:
+        return jsonify({'error': 'Player data service is unavailable on localhost:8000'}), 503
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
@@ -95,6 +113,8 @@ async def get_player_info():
             }
             return jsonify(player_data), 200
     except Exception as e:
+        if isinstance(e, requests.exceptions.RequestException):
+            return jsonify({'error': 'Player data service is unavailable on localhost:8000'}), 503
         return jsonify({'error': str(e)}), 500
     
 if __name__ == "__main__":

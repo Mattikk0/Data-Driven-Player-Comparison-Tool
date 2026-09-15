@@ -103,9 +103,20 @@ searchButton.addEventListener('click', async (event) => {
         }
         playerLoader.style.display = "block";
         resultLoader.style.display = "block";
+        
+    ////////////////////////////////////////////////////////    
+        const startTime = performance.now();
+////////////////////////////////////////////////////////////
+
 
         const searchedPlayerValue = await playerInfo();
         await dataExchange();
+
+////////////////////////////////////////////////////////////
+        const endTime = performance.now();
+        const duration = (endTime - startTime);
+        console.log(`Całkowity czas wykonania: ${duration.toFixed(3)} ms`);
+///////////////////////////////////////////////////////////
 
         if (!Number.isNaN(searchedPlayerValue) && Number.isFinite(searchedPlayerValue)) {
             valueColoring(bestResemblanceTable, searchedPlayerValue);
