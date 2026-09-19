@@ -1,7 +1,6 @@
 import modules.data_processing as dp
 import queries.fbref_query as fbref
 from unidecode import unidecode
-import soccerdata as sd
 
 async def find_similar_players(player, fb):
     combined = await fbref.get_all_players_stats(player, fb)
@@ -18,5 +17,4 @@ async def find_similar_players(player, fb):
         raise ValueError(f"No stats found for player: {player.name}")
 
     return dp.count_similarity(searched_player, stat_matrix)
-
 

@@ -82,6 +82,10 @@ async function dataExchange(){
             
         });
         resultContainer.style.display = "flex";
+        greatestSimilarity.style.backgroundColor = "rgba(0, 0, 0, 1)";
+        leastSimilarity.style.backgroundColor = "rgba(0, 0, 0, 0)";
+        gs_a.style.color = "rgba(255, 255, 255, 0.8)";
+        ls_a.style.color = "rgba(0, 0, 0, 1)";
         worstResemblanceTable.style.display = "none";
         bestResemblanceTable.style.display = "flex";
         resultLoader.style.display = "none";
